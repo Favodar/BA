@@ -18,7 +18,8 @@ from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
 # my_signal_repetitions = 2
 # my_step_limit = 100
 
-filename = "CARS_medium5_225_newObs_ppo2_LR_LinearSchedule_timesteps_3500000ep_length_120turnrate_0.1963125maxspeed_2.5randomBall_TruebinaryReward_True"
+filename = "CARS_medium5_225_LSTM_ppo2_LR_LinearSchedule_timesteps_400000ep_length_120turnrate_0.1963125maxspeed_2.5randomBall_TruebinaryReward_True"
+#filename = "CARS_medium5_225_newObs_ppo2_LR_LinearSchedule_timesteps_4000000ep_length_120turnrate_0.1963125maxspeed_2.5randomBall_TruebinaryReward_True"
 # Load signal parameters from file:
 f = open("../Envparameters/envparameters_" + filename, "r")
 envparameters = f.read()

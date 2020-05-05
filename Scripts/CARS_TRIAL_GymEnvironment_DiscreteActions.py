@@ -53,7 +53,7 @@ class CustomEnv(gym.Env):
 
     self.myCar.move(action[0], action[1])
 
-    #self.renderSlow(30)
+    #self.renderSlow(50)
 
 
 

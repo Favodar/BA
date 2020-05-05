@@ -13,7 +13,7 @@ class Object2D:
 
 
 class Car():
-    def __init__ (self, rotation_step_size = 0.01745*5, maxspeed = 1.0, borderless = False, acceleration = 0.1):
+    def __init__ (self, x_pos = 50.0, y_pos = 50.0, rotation = 0, rotation_step_size = 0.01745*5, maxspeed = 1.0, borderless = False, acceleration = 0.1):
         """[summary]
         
         Keyword Arguments:
@@ -25,8 +25,8 @@ class Car():
         self.borderless = borderless
         self.acceleration = acceleration
 
-        self.rotation = 0
-        self.coordinates = np.array([[50.0, 50.0],])
+        self.rotation = rotation
+        self.coordinates = np.array([[x_pos, y_pos],])
         self.speed = 0
 
         print("Car initialized.")
@@ -163,7 +163,7 @@ class Render:
     def __init__ (self, object2DList):
         self.objectList = object2DList
         self.window1 = graphics.GraphWin("window1", 1000, 1000)
-        self.window1.setCoords(0, 0, 100, 100)
+        self.window1.setCoords(0, 0, 1000, 1000)
         self.graphicsObjectList = []
         self.text = graphics.Text(graphics.Point(1, 50), str(""))
 
@@ -177,7 +177,7 @@ class Render:
             gObj.undraw()
         self.graphicsObjectList = []
 
-        textpos = graphics.Point(50, 5)
+        textpos = graphics.Point(500, 50)
         self.text.undraw()
         self.text = graphics.Text(textpos, str(reward))
         self.text.draw(self.window1)
@@ -185,8 +185,8 @@ class Render:
         for obj in self.objectList:
             points = obj.get2DpointList()
             for point in points:
-                p1 = graphics.Point(point[0], point[1])
-                c = graphics.Circle(p1, 1)
+                p1 = graphics.Point(point[0]+450, point[1]+450)
+                c = graphics.Circle(p1, 5)
                 c.setFill(self.colors[i%self.cnumber])
                 c.draw(self.window1)
                 self.graphicsObjectList.append(c)
@@ -197,7 +197,7 @@ class Render:
             gObj.undraw()
         self.graphicsObjectList = []
 
-        textpos = graphics.Point(50, 5)
+        textpos = graphics.Point(500, 50)
         self.text.undraw()
         self.text = graphics.Text(textpos, str(reward))
         self.text.draw(self.window1)
@@ -205,8 +205,8 @@ class Render:
         for obj in self.objectList:
             points = obj.get2DpointList()
             for point in points:
-                p1 = graphics.Point(point[0], point[1])
-                c = graphics.Circle(p1, 1)
+                p1 = graphics.Point(point[0]+450, point[1]+450)
+                c = graphics.Circle(p1, 5)
                 c.setFill(self.colors[i%self.cnumber])
                 c.draw(self.window1)
                 self.graphicsObjectList.append(c)
