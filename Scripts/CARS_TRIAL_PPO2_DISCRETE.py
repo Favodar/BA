@@ -19,7 +19,7 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, maxspeed = m
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
-timesteps = 3500000
+timesteps = 500000
 my_learning_rate = LinearSchedule(timesteps, 0.005, 0.0001) # default: 0.00025
 
 name = "CARS_medium5_225_newObs_ppo2_LR_"  + "LinearSchedule_"  + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed) + "randomBall_" + str(my_randomBall) + "binaryReward_" + str(my_binaryReward)

@@ -12,7 +12,7 @@ class Object2D:
 
 
 
-class Car():
+class Car(Object2D):
     def __init__ (self, rotation_step_size = 0.01745*5, maxspeed = 1.0, borderless = False):
         """[summary]
         
@@ -161,7 +161,7 @@ class Render:
 
     def __init__ (self, object2DList):
         self.objectList = object2DList
-        self.window1 = graphics.GraphWin("window1", 1000, 1000)
+        self.window1 = graphics.GraphWin("window1", 800, 800)
         self.window1.setCoords(0, 0, 100, 100)
         self.graphicsObjectList = []
         self.text = graphics.Text(graphics.Point(1, 50), str(""))

@@ -26,12 +26,8 @@ class CustomEnv(gym.Env):
     self.number_of_actions = number_of_joints - 1
 
     # super(CustomEnv, self).__init__()
-
-    # Define action and observation space
-    # They must be gym.spaces objects
-    # Example when using discrete actions:
     self.action_space = spaces.Box(-math.pi, math.pi, shape=(self.number_of_actions,), dtype= np.float32)
-    # Example for using image as input:
+
     self.observation_space = spaces.Box(-np.inf, np.inf, shape=(number_of_joints+1,2,), dtype=np.float32)
 
   def step(self, action):
