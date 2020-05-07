@@ -163,7 +163,7 @@ class Render:
     def __init__ (self, object2DList):
         self.objectList = object2DList
         self.window1 = graphics.GraphWin("window1", 800, 800)
-        self.window1.setCoords(0, 0, 100, 100)
+        self.window1.setCoords(0, 0, 500, 500)
         self.graphicsObjectList = []
         self.text = graphics.Text(graphics.Point(1, 50), str(""))
 
@@ -185,8 +185,8 @@ class Render:
         for obj in self.objectList:
             points = obj.get2DpointList()
             for point in points:
-                p1 = graphics.Point(point[0]+450, point[1]+450)
-                c = graphics.Circle(p1, 5)
+                p1 = graphics.Point(point[0]+200, point[1]+200)
+                c = graphics.Circle(p1, 7)
                 c.setFill(self.colors[i%self.cnumber])
                 c.draw(self.window1)
                 self.graphicsObjectList.append(c)
@@ -197,7 +197,7 @@ class Render:
             gObj.undraw()
         self.graphicsObjectList = []
 
-        textpos = graphics.Point(500, 50)
+        textpos = graphics.Point(200, 50)
         self.text.undraw()
         self.text = graphics.Text(textpos, str(reward))
         self.text.draw(self.window1)
@@ -205,8 +205,8 @@ class Render:
         for obj in self.objectList:
             points = obj.get2DpointList()
             for point in points:
-                p1 = graphics.Point(point[0]+450, point[1]+450)
-                c = graphics.Circle(p1, 5)
+                p1 = graphics.Point(point[0]+200, point[1]+200)
+                c = graphics.Circle(p1, 7)
                 c.setFill(self.colors[i%self.cnumber])
                 c.draw(self.window1)
                 self.graphicsObjectList.append(c)
