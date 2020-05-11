@@ -65,7 +65,7 @@ class GymReward:
 
         #self.gazebo.unpause()
 
-        print("action = " + str(action))
+        #print("action = " + str(action))
         i = 0
         rate = rospy.Rate(self.signal_rate)
 
@@ -86,7 +86,7 @@ class GymReward:
                 pub.publish(joint_position)
                 i += 1
             i = 0
-            print("rate.sleep()")
+            #print("rate.sleep()")
             rate.sleep()
 
         #self.gazebo.pause()
@@ -116,7 +116,7 @@ class GymReward:
         except rospy.ServiceException as e:
             rospy.loginfo("Get Model State service call failed:  {0}".format(e))
 
-        print(observations)
+        #print(observations)
         return observations
 
 
@@ -167,7 +167,7 @@ class GymReward:
         initial_pose.position.y = sign2*random.uniform(1.0, 2.0)
         initial_pose.position.z = 0
 
-        model = open("../../Models/unit_sphere_4cm_radius/model.sdf","r")
+        model = open("/home/ryuga/Documents/BA/SDFModels/unit_sphere_4cm_radius/model.sdf","r")
         sdf = model.read()
         try:
             spawn_model(name, sdf, "", initial_pose, "world")

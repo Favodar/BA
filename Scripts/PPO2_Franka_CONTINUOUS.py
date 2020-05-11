@@ -18,7 +18,7 @@ my_learning_rate = 0.003
 timesteps = 160000
 # Configure tensorflow using GPU
 # Use tensorboard to show reward over time etc
-model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/fritz/Documents/BA/TensorBoardLogs") # defaults: learning_rate=2.5e-4,
+model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/BA/TensorBoardLogs") # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps=timesteps)
 
 name = "BALLS_franka_continuous_ppo2"  + str(my_learning_rate) + "_timesteps_" + str(timesteps)
