@@ -21,7 +21,7 @@ timesteps = 300000
 name = "TWOD_FIXEDBALL_franka_DISCRETE_ppo2_LR_"  + str(my_learning_rate) + "stepsize_" + str(my_step_size) + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit)
 # Configure tensorflow using GPU
 # Use tensorboard to show reward over time etc
-model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/fritz/Documents/BA/TensorBoardLogs/TWOD") # defaults: learning_rate=2.5e-4,
+model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/TWOD") # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps=timesteps, tb_log_name= name)
 
 

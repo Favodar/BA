@@ -29,7 +29,6 @@ attacker_binaryReward = True
 # Initialize environment with signal parameters:
 env = CustomEnv(step_limit=attacker_step_limit, step_size = attacker_step_size, maxspeed = attacker_maxspeed, acceleration = attacker_acceleration, randomBall=attacker_randomBall, binaryReward=attacker_binaryReward) # 0.01745*5
 
-# Load trained model and execute it forever:
 attacker_model = PPO2.load("../Models/" +filename)
 
 

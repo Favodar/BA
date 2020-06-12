@@ -15,11 +15,11 @@ env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repet
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
 
-timesteps = 10000
+timesteps = 100000
 scheduler = LinearSchedule(timesteps, 0.001, 0.0001)
 my_learning_rate = scheduler.value # 0.0005 
 
-model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/BA/TensorBoardLogs/NEW_FRANKA") # defaults: learning_rate=2.5e-4,
+model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/NEW_FRANKA") # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps= timesteps)
 
 name = "NEW_ppo2_franka_discrete_ppo2"  + str(my_learning_rate) + "_timesteps_" + str(timesteps)

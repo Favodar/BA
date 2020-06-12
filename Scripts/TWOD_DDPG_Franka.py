@@ -24,7 +24,7 @@ action_noise = OrnsteinUhlenbeckActionNoise(mean=np.zeros(n_actions), sigma=floa
 timesteps = 100000
 name = "TWODNOREPS_franka_continuous_ddpg_learning_rate_" + "_timesteps_" + str(timesteps)
 
-model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise, tensorboard_log="/home/fritz/Documents/BA/TensorBoardLogs")
+model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise, tensorboard_log="/home/ryuga/Documents/TensorBoardLogs")
 model.learn(total_timesteps= timesteps, tb_log_name= name)
 
 model.save(name) # + str(my_learning_rate))

@@ -47,8 +47,12 @@ class GymReward:
         self.gazebo = RosControlAdapter()
         self.gazebo.initialize()
         self.gazebo.unpause()
-        self.rate = 1
+        self.rate = 0
 
+    def reInit(self):
+        self.gazebo = RosControlAdapter()
+        self.gazebo.initialize()
+        self.gazebo.unpause()
 
 
     def initializeNode(self):
@@ -66,15 +70,48 @@ class GymReward:
             #         i += 1
             #     rate.sleep()
         except rospy.ROSInterruptException:
-            print("couldnt Initialize Node!!! cant sleep then")
             pass
 
-    @timeout(1)
-    def rospySleep(self):                
-        self.rate.sleep()
+
+    # Wrapper class that restarts the environment if the environment hangs up during observation collection
+    def getObservation(self, action, reset = False, restart = False):
+        try:
+            return self.getObservation4Real(action, reset, restart)
+        except:
+
+            print("getObservation is not responding, killing ros and gazebo...")
+
+            stream = os.popen('killall gzclient')
+            time.sleep(2.0)
+            os.popen("killall gzserver")
+            time.sleep(5.0)
+            os.popen("killall roscore")
+            time.sleep(2.0)
+            os.popen("killall roslaunch")
+            time.sleep(2.0)
+            os.popen("killall rosmaster")
+            time.sleep(2.0)
 
 
-    def getObservation(self, action, reset = False):
+            print("restarting roscore and gazebo")
+
+
+            os.popen("roscore")
+            time.sleep(5.0)
+            os.popen("roslaunch gazebo_ros empty_world.launch")
+            time.sleep(5.0)
+            os.popen("roslaunch franka_gazebo panda_arm_hand.launch")
+            time.sleep(5.0)
+            self.reInit()
+            self.initializeNode()
+            unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+            unpause()
+            self.rate = rospy.Rate(self.signal_rate, True)
+            return self.getObservation(action, reset, restart = True)
+            #output = stream.read()
+
+    @timeout(10)
+    def getObservation4Real(self, action, reset = False, restart = False):
         #print("entering getObservation4Real")
         unpause = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
         #self.gazebo.unpause()
@@ -85,8 +122,6 @@ class GymReward:
         #rate = rospy.Rate(self.signal_rate)
         #print("line 111, rate = " + str(self.rate))
 
-        unpause()
-
         if not reset:
             #print("if not reset..")
             repetitions = self.signal_repetitions
@@ -96,7 +131,7 @@ class GymReward:
             self.deleteBall()
             self.spawnBall()
         
-        
+        unpause()
         #print("unpause physics")
 
         for x in range(repetitions):
@@ -106,13 +141,9 @@ class GymReward:
                 i += 1
             i = 0
             #print("rate.sleep()")
-            #print("if the program hangs and this is the latest message, rate.sleep() from rospy.Rate IS THE FUCKING PROBLEM")
-            self.rate.sleep()
-            # try:
-            #     self.rospySleep()
-            # except:
-            #     "rate.sleep() took too long, skipping.."
-            #rospy.Rate.sleep(1/self.rate)
+            if not (restart):
+                self.rate.sleep()
+                #rospy.Rate.sleep(1/self.rate)
 
         #self.gazebo.pause()
         

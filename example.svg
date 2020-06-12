@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="200pt" height="200pt" viewBox="0 0 200 200" version="1.1">
-<g id="surface1">
-<path style="fill:none;stroke-width:0.04;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 0.1 0.5 C 0.4 0.9 0.6 0.1 0.9 0.5 " transform="matrix(200,0,0,200,0,0)"/>
-<path style="fill:none;stroke-width:0.02;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,20%,20%);stroke-opacity:0.6;stroke-miterlimit:10;" d="M 0.1 0.5 L 0.4 0.9 M 0.6 0.1 L 0.9 0.5 " transform="matrix(200,0,0,200,0,0)"/>
-<path style="fill-rule:nonzero;fill:rgb(80%,80%,80%);fill-opacity:1;stroke-width:15;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;" d="M 450 250 C 450 360.457031 360.457031 450 250 450 C 139.542969 450 50 360.457031 50 250 C 50 139.542969 139.542969 50 250 50 C 360.457031 50 450 139.542969 450 250 "/>
-</g>
-</svg>
