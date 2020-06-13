@@ -36,11 +36,12 @@ class CustomEnv(gym.Env):
 
     self.reward.initializeNode()
 
-    self.reward.gazebo.__time_step = physics_stepsize
+    # This does not work yet:
+    # self.reward.gazebo.__time_step = physics_stepsize
 
     self.actions = [0.0 for j in range(self.number_of_joints)]
 
-  # Wrapper class that restarts the environment if the environment hangs up during observation collection
+  # Wrapper class that restarts the environment if the environment hangs up during observation collection (does not work yet)
   def step(self, action):
 
     try:
@@ -53,8 +54,7 @@ class CustomEnv(gym.Env):
         print("step() is not responding, killing ros and gazebo...")
 
         #self.reward.gazebo.shutdown()
-        time.sleep(1.0)
-
+        #time.sleep(1.0)
         stream = os.popen('killall gzclient')
         time.sleep(1.0)
         os.popen("killall gzserver")

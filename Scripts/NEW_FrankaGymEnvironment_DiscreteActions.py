@@ -12,10 +12,12 @@ class CustomEnv(gym.Env):
   
   number_of_joints = 7
   
-  def __init__(self, signal_rate = 100, signal_repetitions = 25, step_limit = 8):
+  def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001):
 
     self.reward = GymReward(signal_rate, signal_repetitions)
     self.step_limit = step_limit
+    self.signal_rate = signal_rate
+    self.signal_repetitions = signal_repetitions
 
     # super(CustomEnv, self).__init__()
 
@@ -23,9 +25,13 @@ class CustomEnv(gym.Env):
 
     self.action_space = spaces.MultiDiscrete(actionlist)
 
-    self.observation_space = spaces.Box(-np.inf, np.inf, shape=(10,3,), dtype=np.float32)
+    self.observation_space = spaces.Box(-np.inf,
+                                        np.inf, shape=(10, 3,), dtype=np.float32)
 
     self.reward.initializeNode()
+
+    # This does not work yet:
+    # self.reward.gazebo.__time_step = physics_stepsize
 
     self.actions = [0.0 for j in range(self.number_of_joints)]
 
