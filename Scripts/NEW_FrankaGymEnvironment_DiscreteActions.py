@@ -5,7 +5,8 @@ import numpy as np
 from NEW_FrankaGymRewardNode3RandomBall import GymReward
 
 class CustomEnv(gym.Env):
-  """Custom Environment that follows gym interface"""
+  """ Custom Environment that implements OpenAI gym interface """
+
   metadata = {'render.modes': ['human']}
 
   step_counter = 0
@@ -13,6 +14,20 @@ class CustomEnv(gym.Env):
   number_of_joints = 7
   
   def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001):
+    """
+    Custom Environment that implements OpenAI gym interface
+
+    :param signal_rate (int, optional): How often motor signals are sent to the virtual robot, per second. Defaults to 100.      
+    :param signal_repetitions (int, optional): How often the same signal is repeated. If signal rate is 100 and repetitions is 25, one signal ("action") is repeated for 0.25 seconds. Defaults to 25.
+    :param step_limit (int, optional): How many actions comprise an episode. Defaults to 8.
+    :param physics_stepsize (float, optional): How much time between physics updates (e.g. collision detection). Bigger step size makes the simulation run faster, at the cost of accuracy. Big values can lead to the robot collapse into itself. Sensible values lie between 0.001 (default) and 0.01 (10x faster but deteriorating robot behaviour). Defaults to 0.001.
+
+    Args:
+        signal_rate (int, optional): How often motor signals are sent to the virtual robot, per second. Defaults to 100.
+        signal_repetitions (int, optional): How often the same signal is repeated. If signal rate is 100 and repetitions is 25, one signal ("action") is repeated for 0.25 seconds. Defaults to 25.
+        step_limit (int, optional): How many actions comprise an episode. Defaults to 8.
+        physics_stepsize (float, optional): How much time between physics updates (e.g. collision detection). Bigger step size makes the simulation run faster, at the cost of accuracy. Big values can lead to the robot collapse into itself. Sensible values lie between 0.001 (default) and 0.01 (10x faster but deteriorating robot behaviour). Defaults to 0.001.
+    """
 
     self.reward = GymReward(signal_rate, signal_repetitions)
     self.step_limit = step_limit

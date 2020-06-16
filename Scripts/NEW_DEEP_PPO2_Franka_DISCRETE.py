@@ -19,8 +19,8 @@ timesteps = 100000
 lr_start = 0.001
 lr_end = 0.00025
 scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)
-my_learning_rate = scheduler.value # 0.0005 default: 2.5e-4=0.00025
-print_LR = str(lr_start) + "-" + str(lr_end)
+my_learning_rate = 0.00075 #scheduler.value # 0.0005 default: 2.5e-4=0.00025
+print_LR = str(my_learning_rate) #str(lr_start) + "-" + str(lr_end)
 
 # run PPO2_2 p_quarks = dict(net_arch=[128, dict(vf=[256, 256])])
 # run PPO2_3 p_quarks = dict(net_arch=[128, 128, dict(vf=[256, 256, 256], pi=[16 ,16 , 16])])
@@ -38,7 +38,7 @@ p_quarks = dict(net_arch=[8192, 4096, 4096, dict(
 #    vf=[1024, 1024, 1024, 1024, 1024], pi=[256, 256, 128])])
 
 
-name = "CD5_Phys01_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "CD5_Phys002_constLR_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit)
 

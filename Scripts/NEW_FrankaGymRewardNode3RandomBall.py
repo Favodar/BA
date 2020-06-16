@@ -12,7 +12,7 @@ import random
 import os
 from timeout import timeout
 
-
+""" It is the mark of an educated mind to be able to entertain a thought without accepting it. """
 class GymReward:
 
     observedObjects = [
