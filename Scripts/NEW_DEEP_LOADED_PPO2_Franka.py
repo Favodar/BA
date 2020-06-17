@@ -12,8 +12,8 @@ model_iteration = "_1"
 name = "CD6_1.5xSlimit_staticLR_LoadedFrom270kSteps_Phys004_ppo2_franka_discrete_LR_"
 """
 
-filename = "CD5_Phys002_constLR_ppo2_franka_discrete_LR_0.00075_timesteps_100000srate_sreps_slimit_1002518"
-model_iteration = "_4"
+filename = "cFrom50k_CD5_Phys002_constLR_ppo2_franka_discrete_LR0.00075_timesteps_11200000srate_sreps_slimit_1002518"
+model_iteration = "_6"
 #filename = "NEW_CRAZYDEEP5_ppo2_franka_discrete_LR_0.001-0.0001_timesteps_10000srate_sreps_slimit_1002512"
 # Load signal parameters from file:
 f = open("../Envparameters/envparameters_" + filename, "r")
@@ -70,7 +70,7 @@ print_LR = str(my_learning_rate)
 model.learning_rate = my_learning_rate
 
 # name = filename
-name = "cFrom50k_CD5_Phys002_constLR_ppo2_franka_discrete_LR" + print_LR + "_timesteps_" + \
+name = "cFrom120k_nightly_CD5_Phys002_constLR_ppo2_franka_discrete_LR" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit)
 
