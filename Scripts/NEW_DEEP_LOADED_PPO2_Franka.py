@@ -7,6 +7,11 @@ from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
 from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
 
 """ History
+filename = "Ryzen4400_CD7_EfficientCode_Phys008_constLR_ppo2_franka_discrete_LR_0.004_timesteps_4000000srate_sreps_slimit_1002550"
+model_iteration = "_14"
+pretraining_steps_with_new_LR = 150000
+name = "ryzen4300_thursday_carsLR_EPlength12sec_From150k_CD7_Phys008_ppo2_franka_discrete_LR"
+
 filename = "ryzen4400_heimbach_carsRepairedLR2_EPlength12sec_From760k_CD6_Phys004_ppo2_franka_discrete_LR0.004-0.0001_timesteps_4000000srate_sreps_slimit_1002550"
 model_iteration = "_65"
 pretraining_steps_with_new_LR = 720000
@@ -20,9 +25,9 @@ model_iteration = "_1"
 name = "CD6_1.5xSlimit_staticLR_LoadedFrom270kSteps_Phys004_ppo2_franka_discrete_LR_"
 """
 
-filename = "Ryzen4400_CD7_EfficientCode_Phys008_constLR_ppo2_franka_discrete_LR_0.004_timesteps_4000000srate_sreps_slimit_1002550"
-model_iteration = "_14"
-pretraining_steps_with_new_LR = 150000
+filename = "i7_katja_carsLR_From1510k_CD7Lite_Phys008_ppo2_franka_discrete_LR0.004-0.0001_timesteps_4000000srate_sreps_slimit_1002550"
+model_iteration = "_28"
+pretraining_steps_with_new_LR = 1240000 + 580000
 #filename = "NEW_CRAZYDEEP5_ppo2_franka_discrete_LR_0.001-0.0001_timesteps_10000srate_sreps_slimit_1002512"
 # Load signal parameters from file:
 f = open("../Envparameters/envparameters_" + filename, "r")
@@ -37,7 +42,7 @@ my_signal_repetitions = f_list[1]
 my_step_limit = f_list[2]
 
 # CAREFUL, HARDCODED STEPLIMIT:
-my_step_limit = 50
+# my_step_limit = 50
 my_physics_stepsize = 0.004
 
 # Initialize environment with signal parameters:
@@ -84,7 +89,7 @@ print_LR = str(lr_start) + "-" + str(lr_end)
 model.learning_rate = lr_start
 
 # name = filename
-name = "ryzen4300_thursday_carsLR_EPlength12sec_From150k_CD7_Phys008_ppo2_franka_discrete_LR" + print_LR + "_timesteps_" + \
+name = "i7_katjaContinued_carsLR_From2090k_CD7Lite_Phys008_ppo2_franka_discrete_LR" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit)
 
@@ -97,7 +102,7 @@ except:
           str([my_signal_rate, my_signal_repetitions, my_step_limit]))
 
 save_interval = 20000
-pre_training_save_interval = 10000
+pre_training_save_interval = 20000
 pretraining_iterations = pretraining_steps_with_new_LR/pre_training_save_interval
 
 lr_stepsize = (lr_start-lr_end)/(timesteps/save_interval)

@@ -22,15 +22,15 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, maxspeed = m
 timesteps = 4000000
 my_learning_rate = LinearSchedule(timesteps, 0.005, 0.0001) # default: 0.00025
 
-name = "OriginalVerification_CARS_medium5_225_newObs_ppo2_LR_"  + "LinearSchedule_"  + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed) + "randomBall_" + str(my_randomBall) + "binaryReward_" + str(my_binaryReward)
+name = "CARS_medium5_225_newObs_ppo2_LR_"  + "LinearSchedule_"  + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed) + "randomBall_" + str(my_randomBall) + "binaryReward_" + str(my_binaryReward)
 # Configure tensorflow using GPU
 # Use tensorboard to show reward over time etc
-model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate.value, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL")  # defaults: learning_rate=2.5e-4,
+model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate.value, verbose=1, tensorboard_log="/home/fritz/Documents/BA/TensorBoardLogs/CARSTRIAL") # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps=timesteps, tb_log_name= name)
 
 
-model.save("/media/ryuga/Shared Storage/Models" + name)
+
+model.save("../Models/" + name)
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
