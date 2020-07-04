@@ -89,6 +89,8 @@ class GymReward:
             repetitions = self.signal_repetitions
         else: # give the robot 1.5 seconds to reset its position
             repetitions = int(self.signal_rate*1.5)
+            self.delete_model = rospy.ServiceProxy(
+                "gazebo/delete_model", DeleteModel)
             #print("try to delete and spawn ball")
             self.deleteBall()
             self.spawnBall()
