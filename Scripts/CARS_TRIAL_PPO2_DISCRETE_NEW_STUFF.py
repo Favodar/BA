@@ -19,11 +19,11 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, maxspeed = m
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
-timesteps = 2000000
+timesteps = 4000000
 
 lr_start = 0.001 # macht erst was bei 0.00014
 lr_end = 0.0001
-# scheduler = LinearSchedule(timesteps, lr_start, lr_end)
+scheduler = LinearSchedule(timesteps, lr_start, lr_end)
 # my_learning_rate = scheduler.value
 # my_learning_rate = 0.00075  # scheduler.value default: 2.5e-4=0.00025
 print_LR = str(lr_start) + "-" + str(lr_end)
@@ -32,12 +32,20 @@ print_LR = str(lr_start) + "-" + str(lr_end)
 
 static_learning_rate = 0.00014  # my_learning_rate.value
 
+#CRAZYDEEP7:
+p_quarks = dict(net_arch=[8192, 8192, dict(
+    vf=[8192, 4096, 4096, 2048], pi=[256, 256, 128])])
 
-name = "CARS_logBestGuess001_2Mill_noRender_medium5_225_newObs_ppo2_LR_" + print_LR + "timesteps_" + str(timesteps) + "ep_length_" + str(
+
+name = "CARS_CD7_logStartEnd001_try2_4Mill_noRender_medium5_225_newObs_ppo2_LR_" + print_LR + "timesteps_" + str(timesteps) + "ep_length_" + str(
     my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed) + "randomBall_" + str(my_randomBall) + "binaryReward_" + str(my_binaryReward)
 # Use tensorboard to show reward over time etc
-model = PPO2(MlpPolicy, env, learning_rate=static_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL")  # defaults: learning_rate=2.5e-4,
+
+#model = PPO2(MlpPolicy, env, learning_rate=static_learning_rate, verbose=1,
+#             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL") 
+
+model = PPO2(MlpPolicy, env, policy_kwargs=p_quarks, learning_rate=static_learning_rate, verbose=1,
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL_NEW")
 save_interval = 10000
 pretraining_iterations = 0
 
@@ -49,8 +57,9 @@ model.learning_rate = lr_start
 i = 0
 while(i <= (timesteps/save_interval)):
     # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
-    # log: model.learning_rate = lr_start*0.5**((i*save_interval)*(10/timesteps))
-    model.learning_rate = static_learning_rate
+    # log: 
+    model.learning_rate = lr_end+(lr_start-lr_end)*0.5**((i*save_interval)*(10/timesteps))
+    # model.learning_rate = static_learning_rate
     model.learn(total_timesteps=save_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
     #model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))

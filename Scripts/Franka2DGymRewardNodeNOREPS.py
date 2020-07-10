@@ -48,7 +48,7 @@ class GymReward:
             i += 1
             
 
-        self.render()
+        #self.render()
 
         observedObjects = []
 

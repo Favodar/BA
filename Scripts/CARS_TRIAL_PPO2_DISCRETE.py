@@ -30,7 +30,7 @@ model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate.value, verbose=1,
 model.learn(total_timesteps=timesteps, tb_log_name= name)
 
 
-model.save("/media/ryuga/Shared Storage/Models" + name)
+model.save("/media/ryuga/Shared Storage/Models/" + name)
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")

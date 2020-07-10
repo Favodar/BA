@@ -103,7 +103,7 @@ class CustomEnv(gym.Env):
         return reward
 
   def reset(self):
-    #self.render()
+    self.render()
 
     self.step_counter = 0
     self.episodeIsOver = False

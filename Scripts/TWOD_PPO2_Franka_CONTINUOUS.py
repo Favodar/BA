@@ -17,11 +17,11 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, number_of_jo
 # env = DummyVecEnv([lambda: env])
 
 my_learning_rate = 0.00025 # default: 0.00025
-timesteps = 1000000
-name = "TWOD_FIXEDBALL_franka_CONTINUOUS_ppo2_LR_"  + str(my_learning_rate) + "stepsize_" + str(my_step_size) + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit)
+timesteps = 100000000
+name = "TWOD_OLDVERSION_FIXEDBALL_franka_CONTINUOUS_ppo2_LR_"  + str(my_learning_rate) + "stepsize_" + str(my_step_size) + "timesteps_" + str(timesteps) + "ep_length_" + str(my_step_limit)
 # Configure tensorflow using GPU
 # Use tensorboard to show reward over time etc
-model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/TWOD2") # defaults: learning_rate=2.5e-4,
+model = PPO2(MlpPolicy, env, learning_rate= my_learning_rate, verbose=1, tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/TWOD_NEW") # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps=timesteps, tb_log_name= name)
 
 
