@@ -15,7 +15,7 @@ env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repet
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
 
-timesteps = 1000000
+timesteps = 4000000
 lr_start = 0.001
 lr_end = 0
 #scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)
@@ -51,16 +51,16 @@ p_quarks = dict(net_arch=[1024, 1024, dict(
     vf=[1024, 512, 512, 256], pi=[256, 256, 128])])
 
 
-name = "i7_CD7SL_GrillenNightly_SaveIntervall500_LogLR_Phys008_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "i7_CD7SL_Monday_SaveIntervall500_LogLR_Phys008_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit)
 
 
 model = PPO2(MlpPolicy, env, policy_kwargs=p_quarks, learning_rate=my_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA5")  # defaults: learning_rate=2.5e-4,
+             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")  # defaults: learning_rate=2.5e-4,
 
 # model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate, verbose=1,
-#             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA4")  # defaults: learning_rate=2.5e-4,
+#             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA4")  # defaults: learning_rate=2.5e-4,
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
@@ -72,21 +72,21 @@ except:
 
 #print("Warning: default network architecture")
 
-save_interval = 500
+lr_update_interval = 500
 
-lr_stepsize = (lr_start-lr_end)/(timesteps/save_interval)
+lr_stepsize = (lr_start-lr_end)/(timesteps/lr_update_interval)
 print("lr_stepsize: " + str(lr_stepsize))
 
 i = 0
-while(i <= (timesteps/save_interval)):
+while(i <= (timesteps/lr_update_interval)):
     # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
     # log: 
-    model.learning_rate = lr_start*0.5**((i*save_interval)*(10/timesteps))
+    model.learning_rate = lr_start*0.5**((i*lr_update_interval)*(10/timesteps))
     # static: model.learning_rate = static_learning_rate
-    model.learn(total_timesteps=save_interval, tb_log_name=name,
+    model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
     if(i%40==39):
-        model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+        model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i))
     i += 1
 
 
