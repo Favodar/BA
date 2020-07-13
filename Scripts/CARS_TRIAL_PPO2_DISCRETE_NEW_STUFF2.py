@@ -20,20 +20,20 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, maxspeed = m
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
-timesteps = 4000000
+timesteps = 2000000
 
-lr_start = 0.00011 # macht erst was bei 0.00014
-lr_end = 0.00004
-half_life = 0.5
+lr_start = 0.01 # macht erst was bei 0.00014
+lr_end = 0.00001
+half_life = 0.05
 dyn_lr = LogLearningRate(timesteps= timesteps, lr_start = lr_start, lr_min = lr_end, half_life = half_life)
 
 llr = LinearSchedule(timesteps, 0.005, 0.0001)  # default: 0.00025
 
-my_learning_rate = 0.000063 #dyn_lr.value
+my_learning_rate = 0.000063  # dyn_lr.value  # 0.000063
 # my_learning_rate = scheduler.value
 # my_learning_rate = 0.00075  # scheduler.value default: 2.5e-4=0.00025
-print_LR = str(lr_start) + "-" + str(lr_end)
-# print_LR = str(my_learning_rate)
+#print_LR = str(lr_start) + "-" + str(lr_end)
+print_LR = str(my_learning_rate)
 
 
 #static_learning_rate = 0.00014  # my_learning_rate.value
@@ -47,9 +47,12 @@ print_LR = str(lr_start) + "-" + str(lr_end)
 #CRAZYDEEP7 SuperLite:
 #p_quarks = dict(net_arch=[1024, 1024, dict(
 #    vf=[1024, 512, 512, 256], pi=[256, 256, 128])])
+#ReasonableDeep1:
+p_quarks = dict(net_arch=[dict(
+    vf=[128, 128, 128], pi=[128, 128, 128])])
 
 
-name = "CARS_DefNN_real22.5_newLowGuessStaticLR_yesRender_medium5_225_newObs_ppo2_LR_" + print_LR + "halflife_" +str(half_life) + "_timesteps_" + str(timesteps) + "ep_length_" + str(
+name = "CARS_RD1_real22.5_staticLR_yesRender_medium5_225_newObs_ppo2_LR_" + print_LR + "halflife_" +str(half_life) + "_timesteps_" + str(timesteps) + "ep_length_" + str(
     my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed)
 # Use tensorboard to show reward over time etc
 

@@ -11,9 +11,8 @@ class CustomEnv(gym.Env):
 
   step_counter = 0
   
-  number_of_joints = 7
   
-  def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001):
+  def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001, number_of_joints = 7):
     """
     Custom Environment that implements OpenAI gym interface
 
@@ -28,12 +27,15 @@ class CustomEnv(gym.Env):
         step_limit (int, optional): How many actions comprise an episode. Defaults to 8.
         physics_stepsize (float, optional): How much time between physics updates (e.g. collision detection). Bigger step size makes the simulation run faster, at the cost of accuracy. Big values can lead to the robot collapse into itself. Sensible values lie between 0.001 (default) and 0.01 (10x faster but deteriorating robot behaviour). Defaults to 0.001.
     """
+    self.number_of_joints = number_of_joints
     self.actions = [0.0 for j in range(self.number_of_joints)]
     self.engine = GymReward(self.actions, signal_rate, signal_repetitions)
     self.step_limit = step_limit
     self.signal_rate = signal_rate
     self.signal_repetitions = signal_repetitions
     self.rotation_step = math.pi/self.step_limit
+
+    
 
     # super(CustomEnv, self).__init__()
 

@@ -32,7 +32,7 @@ print("IMPORTANT: Using old, less efficient observation-calculator for comparsio
 print("The import should be changed to the NEW_Efficient_FrankaGymRewardNode3RandomBall.py in the future!")
 
 model = DDPG(MlpPolicy, env, verbose=1, param_noise=param_noise, action_noise=action_noise,
-             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")
 
 name = "RYZEN_DDPG_withNoise_NewEnvParams_DefaultNN_LogLR_Phys004_ddpg_franka_continuous_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
@@ -61,6 +61,6 @@ while(i <= (timesteps/lr_update_interval)):
     model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
     if(i % modulo_number == (modulo_number-1)):
-        model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" +
+        model.save("/media/ryuga/Shared Storage/Models/" +
                    name + "_" + str(i/modulo_number))
     i += 1
