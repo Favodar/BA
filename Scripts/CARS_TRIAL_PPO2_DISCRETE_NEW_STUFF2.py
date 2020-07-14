@@ -8,7 +8,7 @@ from My_Dynamic_Learning_Rate import LogLearningRate
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
 
 my_step_limit = 120
-my_step_size = 0.01745*22.5  # 0.01745*11.25
+my_step_size = 0.01745*11.25 # 0.01745*22.5  #
 my_maxspeed = 2.5
 my_acceleration = 2.5/4
 my_randomBall = True
@@ -22,14 +22,14 @@ env = CustomEnv(step_limit=my_step_limit, step_size = my_step_size, maxspeed = m
 # env = DummyVecEnv([lambda: env])
 timesteps = 4000000
 
-lr_start = 0.00011 # macht erst was bei 0.00014
+lr_start = 0.0005 # macht erst was bei 0.00014
 lr_end = 0.00004
-half_life = 0.5
+half_life = 0.1
 dyn_lr = LogLearningRate(timesteps= timesteps, lr_start = lr_start, lr_min = lr_end, half_life = half_life)
 
 llr = LinearSchedule(timesteps, 0.005, 0.0001)  # default: 0.00025
 
-my_learning_rate = 0.000063 #dyn_lr.value
+my_learning_rate = dyn_lr.value # 0.000063
 # my_learning_rate = scheduler.value
 # my_learning_rate = 0.00075  # scheduler.value default: 2.5e-4=0.00025
 print_LR = str(lr_start) + "-" + str(lr_end)
@@ -49,27 +49,42 @@ print_LR = str(lr_start) + "-" + str(lr_end)
 #    vf=[1024, 512, 512, 256], pi=[256, 256, 128])])
 
 
-name = "CARS_DefNN_real22.5_newLowGuessStaticLR_yesRender_medium5_225_newObs_ppo2_LR_" + print_LR + "halflife_" +str(half_life) + "_timesteps_" + str(timesteps) + "ep_length_" + str(
+name = "CARS_DefNN_real11.25_ELR_yesRender_medium5_225_newObs_ppo2_LR_" + print_LR + "halflife_" +str(half_life) + "_timesteps_" + str(timesteps) + "ep_length_" + str(
     my_step_limit) + "turnrate_" + str(my_step_size) + "maxspeed_" + str(my_maxspeed)
 # Use tensorboard to show reward over time etc
 
 model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL_NEW") 
+             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/CARSTRIAL_NEW_RYZEN") 
 
 #model = PPO2(MlpPolicy, env, policy_kwargs=p_quarks, learning_rate=my_learning_rate, verbose=1,
-#             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL_NEW")
+#             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/CARSTRIAL_NEW")
 
 i = 0
 save_interval = 500000
-model.learn(total_timesteps=timesteps, tb_log_name= name, log_interval= 10, reset_num_timesteps= False)
+model.learn(total_timesteps=1300000, tb_log_name= name, log_interval= 10, reset_num_timesteps= False)
+# model.learning_rate = my_learning_rate/2
+# model.learn(total_timesteps=700000, tb_log_name=name,
+#             log_interval=10, reset_num_timesteps=False)
+# model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_LRhalf")
+# model.learning_rate = 0.00001
+# model.learn(total_timesteps=300000, tb_log_name=name,
+#             log_interval=10, reset_num_timesteps=False)
+# model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_LR00001")
+# model.learning_rate = 0
+# model.learn(total_timesteps=100000, tb_log_name=name,
+#             log_interval=10, reset_num_timesteps=False)
+# model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_LR0")
+
+
+
 # while(i <= (timesteps/save_interval)):
 #     # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
 #     model.learn(total_timesteps=save_interval, tb_log_name=name,
 #                 log_interval=10, reset_num_timesteps=False)
-#     model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+#     model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i))
 #     i += 1
 
-model.save("/media/ryuga/Shared Storage/Models/" + name)
+model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name)
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
