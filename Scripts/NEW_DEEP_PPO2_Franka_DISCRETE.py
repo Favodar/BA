@@ -9,13 +9,15 @@ from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
 my_signal_rate = 100
 my_signal_repetitions = 25
 my_step_limit = 50
+my_number_of_joints = 2
 
-env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit,)
+env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit, number_of_joints= my_number_of_joints)
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
 
 timesteps = 4000000
+is_static_lr = True
 lr_start = 0.001
 lr_end = 0
 #scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)
@@ -51,43 +53,56 @@ print_LR = str(my_learning_rate)
 #    vf=[1024, 512, 512, 256], pi=[256, 256, 128])])
 
 
-name = "RYZEN_DefNN_Mona_staticLR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "i7_DefNN_EASY_Monday_StaticLR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
-    str(my_signal_repetitions) + str(my_step_limit)
+    str(my_signal_repetitions) + str(my_step_limit) + "joints_" + str(my_number_of_joints)
 
+
+#model = PPO2(MlpPolicy, env, policy_kwargs=p_quarks, learning_rate=my_learning_rate, verbose=1,
+#             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")  # defaults: learning_rate=2.5e-4,
 
 model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")  # defaults: learning_rate=2.5e-4,
-
-# model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate, verbose=1,
-#             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA4")  # defaults: learning_rate=2.5e-4,
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA_EASY")  # defaults: learning_rate=2.5e-4,
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
-    f.write(str([my_signal_rate, my_signal_repetitions, my_step_limit, lr_start, lr_end, timesteps]))
+    f.write(str([my_signal_rate, my_signal_repetitions, my_step_limit, lr_start, lr_end, timesteps, my_number_of_joints]))
     f.close()
 except:
     print("envparameters couldn't be saved. They are:" +
-          str([my_signal_rate, my_signal_repetitions, my_step_limit, lr_start, lr_end, timesteps]))
+          str([my_signal_rate, my_signal_repetitions, my_step_limit, lr_start, lr_end, timesteps, my_number_of_joints]))
 
 #print("Warning: default network architecture")
 
 lr_update_interval = 40000
 
+save_interval = 20000
+
 lr_stepsize = (lr_start-lr_end)/(timesteps/lr_update_interval)
 print("lr_stepsize: " + str(lr_stepsize))
 
 i = 0
-while(i <= (timesteps/lr_update_interval)):
-    # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
-    # log: 
-    #model.learning_rate = lr_start*0.5**((i*lr_update_interval)*(10/timesteps))
-    # static: model.learning_rate = static_learning_rate
-    model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
-                log_interval=10, reset_num_timesteps=False)
-    if(True): #i%40==39):
-        model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i))
-    i += 1
+
+if(is_static_lr):
+    while(i <= (timesteps/save_interval)):
+        model.learning_rate = my_learning_rate
+        model.learn(total_timesteps=save_interval, tb_log_name=name,
+                    log_interval=10, reset_num_timesteps=False)
+        model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+        i += 1
+
+else:
+    while(i <= (timesteps/lr_update_interval)):
+        # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
+        # log: 
+        model.learning_rate = lr_start*0.5**((i*lr_update_interval)*(10/timesteps))
+        # static:
+        #model.learning_rate = my_learning_rate
+        model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
+                    log_interval=10, reset_num_timesteps=False)
+        if(i%40==39):
+            model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+        i += 1
 
 
 
