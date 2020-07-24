@@ -65,9 +65,9 @@ env = DummyVecEnv([lambda: env])
 
 #model = PPO2.load("../../Models/" + filename + model_iteration, env=env) # tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/NEW_DEEP_FRANKA"
 # tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/NEW_DEEP_FRANKA"
-model = DDPG.load("/media/ryuga/Shared Storage/Models/" +
+model = DDPG.load("/media/ryuga/TOSHIBA EXT/BA/Models/" +
                   filename + model_iteration, env=env)
-model.tensorboard_log = "/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN"
+model.tensorboard_log = "/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN"
 # env = DummyVecEnv([lambda: env])
 # model.set_env(env)
 # print("TB Log: ")+ str(model.tensorboard_log)
@@ -134,5 +134,5 @@ while(i <= (timesteps/lr_update_interval)):
     model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
     if(i % modulo_number == (modulo_number-1)):
-        model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i/modulo_number))
+        model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i/modulo_number))
     i += 1

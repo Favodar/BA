@@ -42,10 +42,10 @@ name = "CARS_CD7_logStartEnd001_try2_4Mill_noRender_medium5_225_newObs_ppo2_LR_"
 # Use tensorboard to show reward over time etc
 
 #model = PPO2(MlpPolicy, env, learning_rate=static_learning_rate, verbose=1,
-#             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL") 
+#             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/CARSTRIAL") 
 
 model = PPO2(MlpPolicy, env, policy_kwargs=p_quarks, learning_rate=static_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL_NEW")
+             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/CARSTRIAL_NEW")
 save_interval = 10000
 pretraining_iterations = 0
 
@@ -62,10 +62,10 @@ while(i <= (timesteps/save_interval)):
     # model.learning_rate = static_learning_rate
     model.learn(total_timesteps=save_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
-    #model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+    #model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i))
     i += 1
 
-model.save("/media/ryuga/Shared Storage/Models" + name)
+model.save("/media/ryuga/TOSHIBA EXT/BA/Models" + name)
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")

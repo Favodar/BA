@@ -26,11 +26,11 @@ name = "OriginalVerification_CARS_medium5_225_newObs_ppo2_LR_"  + "LinearSchedul
 # Configure tensorflow using GPU
 # Use tensorboard to show reward over time etc
 model = PPO2(MlpPolicy, env, learning_rate=my_learning_rate.value, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/CARSTRIAL")  # defaults: learning_rate=2.5e-4,
+             tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/CARSTRIAL")  # defaults: learning_rate=2.5e-4,
 model.learn(total_timesteps=timesteps, tb_log_name= name)
 
 
-model.save("/media/ryuga/Shared Storage/Models/" + name)
+model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name)
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
