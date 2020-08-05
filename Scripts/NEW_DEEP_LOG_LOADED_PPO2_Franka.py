@@ -1,6 +1,6 @@
 import gym
 
-from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common.policies import MlpPolicy, MlpLstmPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
@@ -30,9 +30,9 @@ model_iteration = "_1"
 name = "CD6_1.5xSlimit_staticLR_LoadedFrom270kSteps_Phys004_ppo2_franka_discrete_LR_"
 """
 
-filename = "i7_CD7SL_Monday_SaveIntervall500_LogLR_Phys008_ppo2_franka_discrete_LR_0.001-0_timesteps_4000000srate_sreps_slimit_1002550"
-model_iteration = "_639"
-pretraining_steps_with_new_LR = 250000
+filename = "i7_DefNN_LSTM_EASY_StaticLR_Phys006_ppo2_franka_discrete_LR_6.3e-05_timesteps_4000000srate_sreps_slimit_1002550joints_2"
+model_iteration = "_16"
+pretraining_steps_with_new_LR = 340000
 #pretraining_steps_with_new_LR = 1240000 + 580000
 #filename = "NEW_CRAZYDEEP5_ppo2_franka_discrete_LR_0.001-0.0001_timesteps_10000srate_sreps_slimit_1002512"
 # Load signal parameters from file:
@@ -91,14 +91,14 @@ lr_start = my_lr_start #0.004
 lr_end = my_lr_end #0.0001
 # scheduler = LinearSchedule(timesteps, lr_start, lr_end)
 # my_learning_rate = scheduler.value
-# my_learning_rate = 0.00075  # scheduler.value default: 2.5e-4=0.00025
-print_LR = str(lr_start) + "-" + str(lr_end)
-# print_LR = str(my_learning_rate)
+my_learning_rate = 0.000063  # scheduler.value default: 2.5e-4=0.00025
+#print_LR = str(lr_start) + "-" + str(lr_end)
+print_LR = str(my_learning_rate)
 
-model.learning_rate = lr_start
+model.learning_rate = my_learning_rate #lr_start
 
 # name = filename
-name = "RYZEN_CD7SL_MondayContinued_FromCa250k_SI500_LogLR_Phys008_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "i7_DefNN_LSTM_EASY_From340k_StaticLR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit)
 
@@ -123,13 +123,20 @@ print("lr_start: " + str(lr_start))
 print("log formula: " + str(lr_start*0.5 **
                             (((i+(pretraining_steps_with_new_LR/lr_update_interval))*lr_update_interval)*(10/timesteps))))
 i = 0
-while(i <= (timesteps/lr_update_interval)):
-    # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
-    # log:
-    model.learning_rate = lr_start*0.5**(((i*lr_update_interval)+pretraining_steps_with_new_LR)*(10/timesteps))
-    # static: model.learning_rate = static_learning_rate
-    model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
+# while(i <= (timesteps/lr_update_interval)):
+#     # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
+#     # log:
+#     # model.learning_rate = lr_start*0.5**(((i*lr_update_interval)+pretraining_steps_with_new_LR)*(10/timesteps))
+#     # static: model.learning_rate = static_learning_rate
+#     model.learn(total_timesteps=lr_update_interval, tb_log_name=name,
+#                 log_interval=10, reset_num_timesteps=False)
+#     if(i % modulo_number == (modulo_number-1)):
+#         model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i/modulo_number))
+#     i += 1
+
+while(True):
+    model.learn(total_timesteps=model_save_interval, tb_log_name=name,
                 log_interval=10, reset_num_timesteps=False)
-    if(i % modulo_number == (modulo_number-1)):
-        model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i/modulo_number))
+    model.save("/media/ryuga/Shared Storage/Models/" +
+               name + "_" + str(i))
     i += 1

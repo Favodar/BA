@@ -35,7 +35,8 @@ class GymReward:
     ['panda', 'panda_link6'],
     ['panda', 'panda_rightfinger'],
     ['panda', 'panda_leftfinger'],
-    ['unit_sphere', 'unit_sphere::link']
+    ['unit_sphere', 'unit_sphere::link'],
+    ['target_sphere', 'target_sphere::link']
 ]
         # 'block_b': Block('panda', 'panda_leftfinger'),
         # 'block_b': Block('unit_sphere', 'link'),
@@ -50,11 +51,21 @@ class GymReward:
     '/franka/joint7_position_controller/command',
     ]
 
-    def __init__(self, action, signal_rate=100, signal_repetitions=25, randomBall = True, ballPos = None):
-        
-        self.ballPos = ballPos
-        
+    def __init__(self, action, signal_rate=100, signal_repetitions=25, randomBall = True, ballPos = None, randomTarget = False, targetPos = None):
+     
         self.isRandomBall = randomBall
+        self.ballPos = ballPos
+        self.isRandomTarget = randomTarget
+        self.targetPos = targetPos
+        self.hitJackpot1 = False
+        self.hitJackpot2 = False
+        self.hitJackpot3 = False
+        self.movedBall = False
+
+        self.jackpot1 = 1000
+        self.jackpot2 = 2000
+        self.jackpot3 = 3000
+
         self.signal_rate = signal_rate
         self.signal_repetitions = signal_repetitions
         self.gazebo = RosControlAdapter()
@@ -83,6 +94,13 @@ class GymReward:
             self.rospyPublishers[i] = rospy.Publisher(self.joint[i], Float64, queue_size=10)
             i += 1
 
+        self.spawnTarget()
+        self.deleteBall()
+        self.spawnBall()
+        self.initial_distance = self.getDistance(self.link_coordinates(self.observedObjects[9][1], ""), self.link_coordinates(self.observedObjects[10][1], ""))
+        self.last_ball_position = self.link_coordinates(self.observedObjects[9][1], "")
+
+
 
     def initializeNode(self):
         try:
@@ -107,6 +125,11 @@ class GymReward:
             #print("try to delete and spawn ball")
             self.deleteBall()
             self.spawnBall()
+            self.hitJackpot1 = False
+            self.hitJackpot2 = False
+            self.hitJackpot3 = False
+            self.movedBall = False
+            self.initial_distance = self.getDistance(self.link_coordinates(self.observedObjects[9][1], ""), self.link_coordinates(self.observedObjects[10][1], ""))
         
         
         i = 0
@@ -136,35 +159,86 @@ class GymReward:
             print("Retrieving observations failed!")
             rospy.loginfo("Get Model State service call failed:  {0}".format(e))
 
-        #print(observations)
+        #print(self.observations)
         return self.observations
 
 
     # returns 10 divided by distance as reward, with a maximum of reward = 1000 and a minimum of reward>0. If reward is 0, distance measurement probably failed. Check if topic strings in observedObjects are correct, gazebo is properly initialised etc
     def getReward(self):
             try:
-                
-                coordinates1 = self.link_coordinates(self.observedObjects[7][1], "")
-                coordinates2 = self.link_coordinates(self.observedObjects[9][1], "")
+                reward = 0
+
+                coordinates_ball = self.link_coordinates(self.observedObjects[9][1], "")
+                coordinates_target = self.link_coordinates(self.observedObjects[10][1], "") 
+                coordinates_finger = self.link_coordinates(self.observedObjects[7][1], "")
 
                 #print("coordinates1: " + str(coordinates1))
                 #print("coordinates2: " + str(coordinates2))
                 #print 'coordinates1.success = ', coordinates1.success
                 #print 'coordinates2.success = ', coordinates2.success
-                xdistance = coordinates1.link_state.pose.position.x - coordinates2.link_state.pose.position.x
-                ydistance = coordinates1.link_state.pose.position.y - coordinates2.link_state.pose.position.y
-                zdistance = coordinates1.link_state.pose.position.z - coordinates2.link_state.pose.position.z
+
+                distance_ball_target = self.getDistance(coordinates_ball, coordinates_target)
+
+                distance_finger_ball = self.getDistance(coordinates_finger, coordinates_ball)
+
+                #print("distance_ball_target = " + str(distance_ball_target))
+                #print("distance_finger_ball = " + str(distance_finger_ball))
+
+                if(distance_finger_ball<0.1):
+                    distance_finger_ball = 0.1
+                if(distance_ball_target < 0.1):
+                    distance_ball_target = 0.1
                 
-                distance = math.sqrt(xdistance**2 + ydistance**2 + zdistance**2)
+                if(self.initial_distance==distance_ball_target):
+                    reward += 0.1/(distance_finger_ball**2)
+                    
+                    if(distance_finger_ball < 1.2):
+                        reward += 0.5
+                        if(distance_finger_ball < 0.9):
+                            reward += 0.5
+                            if(distance_finger_ball < 0.6):
+                                reward += 1
+                                if(distance_finger_ball < 0.3):
+                                    reward += 1
+                    #                 if(distance_finger_ball < 0.3):
+                    #                     reward+=50
+                    #                     if(distance_finger_ball < 0.15):
+                    #                         reward += 150
+                else:
+                    if(self.movedBall == False):
+                        print("Ball moved! +100")
+                        self.movedBall = True
+                        reward += 100
+                    reward +=10
+                    reward -= (distance_ball_target-2)*5
+                    #reward += 20/(distance_ball_target**2)-distance_ball_target
+                    #reward += 1000*self.getDistance(self.last_ball_position, coordinates_ball)
 
-                #print ("distance = " + str(distance))
 
-                if(distance<0.01):
-                    distance = 0.01
 
-                reward = 10/distance
+                if((distance_ball_target < 1.0)):
+                    if(self.hitJackpot1 == False):
+                        reward += self.jackpot1
+                        self.hitJackpot1 = True
+                        print("Close to the target! +" + str(self.jackpot1))
 
-                #print ("reward = " + str(reward))
+                    if((distance_ball_target < 0.5)):
+                        if(self.hitJackpot2 == False):
+                            reward += self.jackpot2
+                            self.hitJackpot2 = True
+                            print("Very close to the target! +" + str(self.jackpot2))
+
+                        if((distance_ball_target < 0.1)):
+                            if(self.hitJackpot2 == False):
+                                reward += self.jackpot3
+                                self.hitJackpot3 = True
+                                print("Hit the target! +" + str(self.jackpot3))
+
+
+
+
+                print ("reward = " + str(reward))
+                self.last_ball_position = coordinates_ball
 
                 return reward
 
@@ -173,19 +247,27 @@ class GymReward:
 
             return 0
 
+    def getDistance(self, coordinates1, coordinates2):
+                xdistance = coordinates1.link_state.pose.position.x - coordinates2.link_state.pose.position.x
+                ydistance = coordinates1.link_state.pose.position.y - coordinates2.link_state.pose.position.y
+                zdistance = coordinates1.link_state.pose.position.z - coordinates2.link_state.pose.position.z
+                distance = math.sqrt(xdistance**2 + ydistance**2 + zdistance**2)
+                
+                return distance
+    
     def spawnBall(self, name = "unit_sphere"):
         initial_pose = Pose()
         if(self.isRandomBall):
             
             sign1 = random.choice([1, -1])
             sign2 = random.choice([1, -1])
-            initial_pose.position.x = sign1*random.uniform(1.0, 2.0)
-            initial_pose.position.y = sign2*random.uniform(1.0, 2.0)
+            initial_pose.position.x = sign1*random.uniform(0.3, 0.6)
+            initial_pose.position.y = sign2*random.uniform(0.3, 0.6)
             initial_pose.position.z = 0
         else:
             if(self.ballPos == None):
-                initial_pose.position.x = 1.0
-                initial_pose.position.y = 1.0
+                initial_pose.position.x = 0.5
+                initial_pose.position.y = 0.5
                 initial_pose.position.z = 0
             else:
                 initial_pose.position.x = self.ballPos[0]
@@ -195,6 +277,36 @@ class GymReward:
             self.spawn_model(name, self.ball_model, "", initial_pose, "world")
         except:
             print("spawning model failed. trying again.")
+            try:
+                self.spawn_model(name, self.ball_model,
+                                 "", initial_pose, "world")
+            except:
+                pass
+            pass
+
+    def spawnTarget(self, name="target_sphere"):
+        self.deleteBall(name)
+        initial_pose = Pose()
+        if(self.isRandomTarget):
+
+            sign1 = random.choice([1, -1])
+            sign2 = random.choice([1, -1])
+            initial_pose.position.x = sign1*random.uniform(2.0, 3.0)
+            initial_pose.position.y = sign2*random.uniform(2.0, 3.0)
+            initial_pose.position.z = 0
+        else:
+            if(self.targetPos == None):
+                initial_pose.position.x = 2.0
+                initial_pose.position.y = -1.0
+                initial_pose.position.z = 0
+            else:
+                initial_pose.position.x = self.targetPos[0]
+                initial_pose.position.y = self.targetPos[1]
+                initial_pose.position.z = self.targetPos[2]
+        try:
+            self.spawn_model(name, self.ball_model, "", initial_pose, "world")
+        except:
+            print("spawning target model failed. trying again.")
             try:
                 self.spawn_model(name, self.ball_model,
                                  "", initial_pose, "world")

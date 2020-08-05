@@ -2,7 +2,7 @@ import gym
 from gym import spaces
 import math
 import numpy as np
-from NEW_Efficient_FrankaGymRewardNode3RandomBall import GymReward
+from Ballrolling_FrankaRewardNode_Efficient import GymReward
 
 class CustomEnv(gym.Env):
   """ Custom Environment that implements OpenAI gym interface """
@@ -12,7 +12,7 @@ class CustomEnv(gym.Env):
   step_counter = 0
   
   
-  def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001, number_of_joints = 7, randomBall = True, ballPos = None):
+  def __init__(self, signal_rate=100, signal_repetitions=25, step_limit=8, physics_stepsize=0.001, number_of_joints = 7, randomBall = True, ballPos = None, randomTarget = False, targetPos = None):
     """
     Custom Environment that implements OpenAI gym interface
 
@@ -29,11 +29,11 @@ class CustomEnv(gym.Env):
     """
     self.number_of_joints = number_of_joints
     self.actions = [0.0 for j in range(self.number_of_joints)]
-    self.engine = GymReward(self.actions, signal_rate, signal_repetitions, randomBall = randomBall, ballPos = ballPos)
+    self.engine = GymReward(self.actions, signal_rate, signal_repetitions, randomBall = randomBall, ballPos = ballPos, randomTarget=randomTarget, targetPos=targetPos)
     self.step_limit = step_limit
     self.signal_rate = signal_rate
     self.signal_repetitions = signal_repetitions
-    self.rotation_step = math.pi/self.step_limit
+    self.rotation_step = 6*(math.pi/100)
 
     
 
@@ -44,7 +44,7 @@ class CustomEnv(gym.Env):
     self.action_space = spaces.MultiDiscrete(actionlist)
 
     self.observation_space = spaces.Box(-np.inf,
-                                        np.inf, shape=(10, 3,), dtype=np.float32)
+                                        np.inf, shape=(11, 3,), dtype=np.float32)
 
     self.engine.initializeNode()
 

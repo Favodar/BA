@@ -4,7 +4,7 @@ from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
-from NEW_FrankaGymEnvironment_DiscreteActions import CustomEnv
+from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
 
 # f = open("envparameters.txt", "r")
 # my_list = f.read()
@@ -19,30 +19,45 @@ from NEW_FrankaGymEnvironment_DiscreteActions import CustomEnv
 # my_step_limit = 16
 
 # Load signal parameters from file:
-filename = "NEW_CD6_LoadedFrom60k+Steps_simplePhys01_newTryNightly_ppo2_franka_discrete_LR_0.00025_timesteps_1200000srate_sreps_slimit_1002512"
+filename = "i7_DefNN_StaticBall_EasyJoints_ELR4try2_Phys006_ppo2_franka_discrete_LR_6.3e-05_timesteps_1000000srate_sreps_slimit_1002550joints_2"
 f = open("../Envparameters/envparameters_" + filename, "r")
 envparameters = f.read()
 envparameters = envparameters.strip('[')
 envparameters = envparameters.strip(']')
-f_list = [int(i) for i in envparameters.split(",")]
+f_list = [i for i in envparameters.split(",")]
+print(
+    "envparameters loaded from file [my_signal_rate, my_signal_repetitions, my_step_limit, lr_start, lr_end, timesteps]:")
 print(str(f_list))
 
-my_signal_rate = f_list[0]
-my_signal_repetitions = f_list[1]
-my_step_limit = f_list[2]
+my_signal_rate = int(f_list[0])
+my_signal_repetitions = int(f_list[1])
+my_step_limit = int(f_list[2])
+my_timesteps = -1
+my_number_of_joints = 7
+my_randomBall = True
 
+try:
+    my_timesteps = int(f_list[5])
+    my_number_of_joints = int(f_list[6])
+    my_randomBall = ((f_list[7]) == 'True')
+except:
+    print("timesteps, number_of_joints and randomBall params couldnt be loaded and were set to default vaules.")
+    pass
+
+print("this agent was aiming for a training with " + str(my_timesteps) + " timesteps.")
+print("random Ball LOADED VALUE" + str(my_randomBall))
 # Initialize environment with signal parameters:
-env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit)
+env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit, number_of_joints=my_number_of_joints, randomBall=my_randomBall)
 
 # Load trained model and execute it forever:
 
 # DELETE THIS BELOW
 #!
-filename += "_6"
+filename += "_159"
 #!
 # DELETE THE ABOVE
 
-model = PPO2.load("../Models/"+filename)
+model = PPO2.load("/media/ryuga/Shared Storage/Models/"+filename)
 
 obs = env.reset()
 env.render()
