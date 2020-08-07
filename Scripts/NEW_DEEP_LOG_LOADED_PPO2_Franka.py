@@ -1,6 +1,6 @@
 import gym
 
-from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common.policies import MlpPolicy, MlpLstmPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
@@ -102,9 +102,9 @@ lr_start = my_lr_start #0.004
 lr_end = my_lr_end #0.0001
 # scheduler = LinearSchedule(timesteps, lr_start, lr_end)
 # my_learning_rate = scheduler.value
-# my_learning_rate = 0.00075  # scheduler.value default: 2.5e-4=0.00025
-print_LR = str(lr_start) + "-" + str(lr_end)
-# print_LR = str(my_learning_rate)
+my_learning_rate = 0.000063  # scheduler.value default: 2.5e-4=0.00025
+#print_LR = str(lr_start) + "-" + str(lr_end)
+print_LR = str(my_learning_rate)
 
 is_static_lr = True
 model.learning_rate = 0.000063 #lr_start
