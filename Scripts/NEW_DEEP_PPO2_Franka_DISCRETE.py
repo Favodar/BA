@@ -11,19 +11,19 @@ my_signal_repetitions = 25
 my_step_limit = 50
 my_number_of_joints = 2
 my_randomBall = False
-my_ballPos = [-0.5, -0.5, 0]
+my_ballPos = [0.8, 0.8, 0]
 
 env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit, number_of_joints= my_number_of_joints, randomBall= my_randomBall, ballPos = my_ballPos)
 # Optional: PPO2 requires a vectorized environment to run
 # the env is now wrapped automatically when passing it to the constructor
 # env = DummyVecEnv([lambda: env])
 
-timesteps = 1000000
-is_static_lr = False
-lr_start = 0.0005
+timesteps = 10000
+is_static_lr = True
+lr_start = 0.001
 lr_end = 0
 #scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)
-my_learning_rate = 0.000063 #scheduler.value # 0.0005 default: 2.5e-4=0.00025
+my_learning_rate = 0.0005 # 0.000063 #scheduler.value # 0.0005 default: 2.5e-4=0.00025
 print_LR = str(my_learning_rate) 
 #print_LR = str(lr_start) + "-" + str(lr_end)
 
@@ -55,7 +55,7 @@ print_LR = str(my_learning_rate)
 #    vf=[1024, 512, 512, 256], pi=[256, 256, 128])])
 
 
-name = "i7_DefNN_StaticCloseBall_EasyJoints_ELR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "COMP_i7_DefNN_Static08Ball_EasyJoints_staticLR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "_srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit) + "_joints_" + str(my_number_of_joints) + "_rdmBall_" + str(my_randomBall) + "_ballPos_" + str(my_ballPos)
 
@@ -65,7 +65,7 @@ name = "i7_DefNN_StaticCloseBall_EasyJoints_ELR_Phys006_ppo2_franka_discrete_LR_
 
 policy = MlpPolicy # if MlpLstmPolicy then nminibatches=1 # MlpPolicy
 model = PPO2(policy, env, learning_rate=my_learning_rate, verbose=1, 
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA_TOUCH")  # defaults: learning_rate=2.5e-4,
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/COMPARISON_FRANKA_TOUCH")  # defaults: learning_rate=2.5e-4,
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
@@ -87,7 +87,7 @@ print("lr_stepsize: " + str(lr_stepsize))
 i = 0
 
 if(is_static_lr):
-    while(i <= (timesteps/save_interval)):
+    while(True): #i <= (timesteps/save_interval)):
         model.learning_rate = my_learning_rate
         model.learn(total_timesteps=save_interval, tb_log_name=name,
                     log_interval=10, reset_num_timesteps=False)
@@ -95,7 +95,7 @@ if(is_static_lr):
         i += 1
 
 else:
-    while(i <= (timesteps/lr_update_interval)):
+    while(True): #i <= (timesteps/lr_update_interval)):
         # linear: model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
         # log: 
         model.learning_rate = lr_start*0.5**((i*lr_update_interval)*(10/timesteps))

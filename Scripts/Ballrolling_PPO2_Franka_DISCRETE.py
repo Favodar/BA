@@ -19,13 +19,13 @@ env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repet
 # env = DummyVecEnv([lambda: env])
 
 timesteps = 3000000
-is_static_lr = False
+is_static_lr = True
 lr_start = 0.0005
 lr_end = 0.000063
 #scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)
-my_learning_rate = 0.000063 #scheduler.value # 0.0005 default: 2.5e-4=0.00025
-#print_LR = str(my_learning_rate) 
-print_LR = str(lr_start) + "-" + str(lr_end)
+my_learning_rate = 0.0005 #0.000063 #scheduler.value # 0.0005 default: 2.5e-4=0.00025
+print_LR = str(my_learning_rate) 
+#print_LR = str(lr_start) + "-" + str(lr_end)
 
 # run PPO2_2 p_quarks = dict(net_arch=[128, dict(vf=[256, 256])])
 # run PPO2_3 p_quarks = dict(net_arch=[128, 128, dict(vf=[256, 256, 256], pi=[16 ,16 , 16])])
@@ -59,7 +59,7 @@ p_quarks = dict(net_arch=[256, 256, dict(
     vf=[256, 128], pi=[64])])
 
 
-name = "DELETEME_i7_LessPunishTry2_6xSTEPSIZE_RD2_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "i7_LessPunishTry2_6xSTEPSIZE_RD2_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "_srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit) + "_joints_" + str(my_number_of_joints) + "_rdmBall_" + str(my_randomBall) + "_ballPos_" + str(my_ballPos)
 
@@ -68,8 +68,8 @@ name = "DELETEME_i7_LessPunishTry2_6xSTEPSIZE_RD2_Phys006_ppo2_franka_discrete_L
 #             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")  # defaults: learning_rate=2.5e-4,
 
 policy = MlpPolicy # if MlpLstmPolicy then nminibatches=1 # MlpPolicy
-model = PPO2(policy, env,policy_kwargs= p_quarks, learning_rate=my_learning_rate, verbose=1, 
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/FRANKA_BALLROLL_3")  # defaults: learning_rate=2.5e-4,
+model = PPO2(policy, env, policy_kwargs=p_quarks, learning_rate=my_learning_rate, verbose=1,
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/COMPARE_FRANKA_BALLROLL")  # defaults: learning_rate=2.5e-4,
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")
