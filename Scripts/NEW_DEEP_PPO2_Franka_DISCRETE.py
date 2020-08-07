@@ -18,10 +18,10 @@ env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repet
 # env = DummyVecEnv([lambda: env])
 architecture_name = "UnknownArchitecture"
 
-timesteps = 1000000
+timesteps = 4000000
 save_interval = 20000
 is_static_lr = False
-lr_start = 0.001
+lr_start = 0.0005
 lr_end = 0.000063
 half_life = 0.1
 dyn_lr = LogLearningRate(
@@ -77,7 +77,7 @@ else:
                 tensorboard_log="/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA5_RYZEN")  # defaults: learning_rate=2.5e-4,
     print("Neural net architecture: " + architecture_name)
 
-name = "Ryzen_DefNN_EASY_ELR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_" + architecture_name + "_timesteps_" + \
+name = "Ryzen_DefNN_EASY_anotherELR_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_" + architecture_name + "_timesteps_" + \
     str(timesteps) + "srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit) + \
     "joints_" + str(my_number_of_joints)
