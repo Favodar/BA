@@ -4,7 +4,7 @@ from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from CARS_TRIAL_GymEnvironment_DiscreteActions import CustomEnv
-from My_Dynamic_Learning_Rate import LogLearningRate
+from My_Dynamic_Learning_Rate import ExpLearningRate
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
 
 my_step_limit = 120
@@ -25,7 +25,7 @@ timesteps = 2000000
 lr_start = 0.0005 # macht erst was bei 0.00014
 lr_end = 0.00004
 half_life = 0.1
-dyn_lr = LogLearningRate(timesteps= timesteps, lr_start = lr_start, lr_min = lr_end, half_life = half_life)
+dyn_lr = ExpLearningRate(timesteps= timesteps, lr_start = lr_start, lr_min = lr_end, half_life = half_life)
 
 llr = LinearSchedule(timesteps, 0.005, 0.0001)  # default: 0.00025
 

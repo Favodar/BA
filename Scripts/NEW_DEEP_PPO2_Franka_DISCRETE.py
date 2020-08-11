@@ -5,7 +5,7 @@ from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
 from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
-from My_Dynamic_Learning_Rate import LogLearningRate
+from My_Dynamic_Learning_Rate import ExpLearningRate
 
 my_signal_rate = 100
 my_signal_repetitions = 25
@@ -26,7 +26,7 @@ is_static_lr = False
 lr_start = 0.0005
 lr_end = 0.000063
 half_life = 0.1
-dyn_lr = LogLearningRate(
+dyn_lr = ExpLearningRate(
     timesteps=timesteps, lr_start=lr_start, lr_min=lr_end, half_life=half_life, save_interval = save_interval)
 
 #scheduler = LinearSchedule(schedule_timesteps= timesteps,initial_p= lr_start, final_p = lr_end)

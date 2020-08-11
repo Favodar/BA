@@ -1,4 +1,4 @@
-class LogLearningRate():
+class ExpLearningRate():
 
     """
     Logarithmically declining learning rate. This is a somewhat robust learning rate since it can apply learning rates of different orders of magnitude during one training, guaranteeing to hit the optimal static learning rate at some point.
