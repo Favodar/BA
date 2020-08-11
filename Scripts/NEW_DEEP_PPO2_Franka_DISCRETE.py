@@ -12,7 +12,7 @@ my_signal_repetitions = 25
 my_step_limit = 50
 my_number_of_joints = 2
 my_randomBall = False
-my_ballPos = [-0.5, -0.5, 0]
+my_ballPos = [0.8, 0.8, 0]
 
 env = CustomEnv(signal_rate= my_signal_rate, signal_repetitions= my_signal_repetitions, step_limit= my_step_limit, number_of_joints= my_number_of_joints, randomBall= my_randomBall, ballPos = my_ballPos)
 # Optional: PPO2 requires a vectorized environment to run
