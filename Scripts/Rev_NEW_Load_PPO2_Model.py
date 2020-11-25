@@ -4,7 +4,7 @@ from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
-from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
+from NEW_Efficient_FrankaGymEnvironment_DiscreteActions_Revisited import CustomEnv
 
 # f = open("envparameters.txt", "r")
 # my_list = f.read()
@@ -39,7 +39,7 @@ my_randomBall = True
 try:
     my_timesteps = int(f_list[5])
     my_number_of_joints = int(f_list[6])
-    my_randomBall = ((f_list[7]) == 'True')
+    my_randomBall = ((f_list[7]) == ' True')
 except:
     print("timesteps, number_of_joints and randomBall params couldnt be loaded and were set to default vaules.")
     pass

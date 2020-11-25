@@ -4,11 +4,11 @@ from stable_baselines.common.policies import MlpPolicy, MlpLstmPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import PPO2
 from stable_baselines.common.schedules import ConstantSchedule, LinearSchedule
-from NEW_Efficient_FrankaGymEnvironment_DiscreteActions import CustomEnv
+from NEW_Efficient_FrankaGymEnvironment_DiscreteActions_Revisited import CustomEnv
 
 my_signal_rate = 100
 my_signal_repetitions = 25
-my_step_limit = 50
+my_step_limit = 80
 my_number_of_joints = 2
 my_randomBall = True
 my_ballPos = [0.8, 0.8, 0]
@@ -59,7 +59,7 @@ print_LR = str(lr_start) + "-" + str(lr_end)
 #    vf=[256, 128], pi=[64])])
 
 
-name = "COMP_i7_DISCRETE_DefNN_Static08Ball_Phys006_ppo2_franka_LR_" + print_LR + "_timesteps_" + \
+name = "Rev_i7_DISCRETE_DefNN_RndmBall_Phys006_ppo2_franka_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "_srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit) + "_joints_" + str(my_number_of_joints) + "_rdmBall_" + str(my_randomBall) + "_ballPos_" + str(my_ballPos)
 
@@ -69,7 +69,7 @@ name = "COMP_i7_DISCRETE_DefNN_Static08Ball_Phys006_ppo2_franka_LR_" + print_LR 
 
 policy = MlpPolicy # if MlpLstmPolicy then nminibatches=1 # MlpPolicy
 model = PPO2(policy, env, learning_rate=my_learning_rate, verbose=1,
-             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/COMPARISON_FRANKA_TOUCH")  # defaults: learning_rate=2.5e-4,
+             tensorboard_log="/media/ryuga/Shared Storage/TensorBoardLogs/Rev_NEW_DEEP_FRANKA")  # defaults: learning_rate=2.5e-4,
 
 try:
     f = open("../Envparameters/envparameters_" + name, "x")

@@ -59,7 +59,7 @@ p_quarks = dict(net_arch=[256, 256, dict(
     vf=[256, 128], pi=[64])])
 
 
-name = "i7_LessPunishTry2_6xSTEPSIZE_RD2_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
+name = "Colloquium2_i7_LessPunishTry2_6xSTEPSIZE_RD2_Phys006_ppo2_franka_discrete_LR_" + print_LR + "_timesteps_" + \
     str(timesteps) + "_srate_sreps_slimit_" + str(my_signal_rate) + \
     str(my_signal_repetitions) + str(my_step_limit) + "_joints_" + str(my_number_of_joints) + "_rdmBall_" + str(my_randomBall) + "_ballPos_" + str(my_ballPos)
 
