@@ -57,7 +57,7 @@ filename += "_959"
 #!
 # DELETE THE ABOVE
 
-model = PPO2.load("/media/ryuga/Shared Storage/Models/"+filename)
+model = PPO2.load("/media/ryuga/TOSHIBA EXT/BA/Models/"+filename)
 
 obs = env.reset()
 env.render()

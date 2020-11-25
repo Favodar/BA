@@ -56,9 +56,9 @@ env = DummyVecEnv([lambda: env])
 
 #model = PPO2.load("../../Models/" + filename + model_iteration, env=env) # tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/NEW_DEEP_FRANKA"
 # tensorboard_log="/home/ryuga/Documents/TensorBoardLogs/NEW_DEEP_FRANKA"
-model = PPO2.load("/media/ryuga/Shared Storage/Models/" +
+model = PPO2.load("/media/ryuga/TOSHIBA EXT/BA/Models/" +
                   filename + model_iteration, env=env)
-model.tensorboard_log = "/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA4"
+model.tensorboard_log = "/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA4"
 # env = DummyVecEnv([lambda: env])
 # model.set_env(env)
 # print("TB Log: ")+ str(model.tensorboard_log)
@@ -112,7 +112,7 @@ i = 0
 while(i <= (timesteps/save_interval)):
     model.learning_rate = lr_start-(lr_stepsize*(i+pretraining_iterations))
     model.learn(total_timesteps=save_interval, tb_log_name=name, log_interval=10, reset_num_timesteps=False)
-    model.save("/media/ryuga/Shared Storage/Models/" + name + "_" + str(i))
+    model.save("/media/ryuga/TOSHIBA EXT/BA/Models/" + name + "_" + str(i))
     i+=1
 
 # model.learn(total_timesteps=timesteps, tb_log_name=name, reset_num_timesteps=False, log_interval=10)

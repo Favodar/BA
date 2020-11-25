@@ -41,9 +41,9 @@ env = CustomEnv(signal_rate=my_signal_rate,
 
 env = DummyVecEnv([lambda: env])
 
-model = PPO2.load("/media/ryuga/Shared Storage/Models/" +
+model = PPO2.load("/media/ryuga/TOSHIBA EXT/BA/Models/" +
                   filename + model_iteration, env=env)
-model.tensorboard_log = "/media/ryuga/Shared Storage/TensorBoardLogs/NEW_DEEP_FRANKA2"
+model.tensorboard_log = "/media/ryuga/TOSHIBA EXT/BA/TensorBoardLogs/NEW_DEEP_FRANKA2"
 
 
 # Demonstration of the loaded model

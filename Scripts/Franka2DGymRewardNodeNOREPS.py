@@ -1,4 +1,4 @@
-from RobotSimulation2D import Robot, Render, Ball
+from RobotSimulation2D_Revisited import Robot, Render, Ball
 import random
 import time
 import math
@@ -38,7 +38,7 @@ class GymReward:
             self.renderFast()
             print("reward" + str(self.getReward()))
             self.myRobot = Robot(number_of_joints= self.number_of_joints, step_size = self.step_size)
-            self.spawnBallWithCoordinates(1,1)
+            self.spawnBall()
             self.myRender.setObjects([self.myRobot, self.myBall])
 
         i = 0
