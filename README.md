@@ -1,0 +1,2 @@
+# BA
+An environment for training a robot with deep reinforcement learning (deep RL). It uses the deep RL library stable-baselines by OpenAI, the Robot Operating System (ROS), and the robot simulator Gazebo 9 with the physics engine ODE. If you want to use this project or have any questions, feel free to ask. Unfortunately the setup is complicated, and I wouldn't recommend trying it on your own if you have no experience with ROS, but I may be able to help you.
