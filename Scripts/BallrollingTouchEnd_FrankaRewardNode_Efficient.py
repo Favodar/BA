@@ -169,8 +169,12 @@ class GymReward:
         #print(self.observations)
         return self.observations
 
-
-    # returns 10 divided by distance as reward, with a maximum of reward = 1000 and a minimum of reward>0. If reward is 0, distance measurement probably failed. Check if topic strings in observedObjects are correct, gazebo is properly initialised etc
+    """
+    Returns a one-time reward if the ball was moved and continuous reward for closeness of the ball to the target (can be negative if the ball is way off target).
+    Additional one-time rewards if the ball crosses certain radii around the target. This is supposed to reward coming close to the target even if the ball proceeds
+    to roll far away afterwards.
+    If reward is 0, distance measurement probably failed. Check if topic strings in observedObjects are correct, gazebo is properly initialised etc
+    """
     def getReward(self):
             try:
                 reward = 0
