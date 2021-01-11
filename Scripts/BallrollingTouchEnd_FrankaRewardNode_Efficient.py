@@ -13,14 +13,12 @@ import os
 from timeout import timeout
 
 """
-"The French have already discovered that the blackness of skin is no reason why a human being
-should be abandoned without redress to the caprice of a tormentor. It may come one day to be recognized,
-that the number of legs, the villosity of the skin, or the termination of the os sacrum, are reasons
-equally insufficient for abandoning a sensitive being to the same fate. What else is it that should
-trace the insuperable line? Is it the faculty of reason, or perhaps, the faculty for discourse?
-The question is not, 'Can they reason?' nor, 'Can they talk?' but, 'Can they suffer?'"
-
-- Jeremy Bentham (1748 - 1832) about the treatment of animals
+A class that implements mid-level control over the virtual Franka Panda cobot via ROS and gazebo.
+It is structured for use with reinforcement learning, therefore the control signals are sent in
+the "getObservation" function which returns an observation about a state under the condition that
+certain actions have been taken. In other words, it forces the whole process in a
+state1(action) -> state2, reward
+structure, so that calculations can be made which assume the process is an MDP.
 """
 class GymReward:
 
