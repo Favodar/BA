@@ -3,7 +3,7 @@ An environment for training a virtual robot with deep reinforcement learning (de
 
 The general architecture is this:
 On the surface is a script that controls the hyperparameters, starts & ends the training and saves the logs and models (BallrollingTouchEnd_PPO2_Franka.py)
-This script imports the environment which implements the OpenAI Gym environment class (BallrollingTouchEnd_FrankaGymEnvironment_ContinuousActions.py).
+This script imports an environment (in the RL sense) which implements the OpenAI Gym environment class (BallrollingTouchEnd_FrankaGymEnvironment_ContinuousActions.py).
 This environment has high-level control over the robot. The low-level control and the reward calculation are implemented in the GymReward class (BallrollingTouchEnd_FrankaRewardNode_Efficient.py).
 
 Those are the classes I have written and uploaded here. They import other existing libraries and classes, which are connected as follows:
