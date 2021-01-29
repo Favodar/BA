@@ -1,11 +1,14 @@
 class ExpLearningRate():
 
     """
-    Logarithmically declining learning rate. This is a somewhat robust learning rate since it can apply learning rates of different orders of magnitude during one training, guaranteeing to hit the optimal static learning rate at some point.
-    If you know upper and lower bounds of a sensible learning rate (those are dependant on environment and algorithm!), plug them in and adapt the half life accordingly.
+    Logarithmically declining learning rate. This is a somewhat robust learning rate since it
+    can apply learning rates of different orders of magnitude during one training, guaranteeing
+    to hit the optimal static learning rate at some point.
+    If you know upper and lower bounds of a sensible learning rate (those are dependent on
+    environment and algorithm!), plug them in and adapt the half life accordingly.
     Default values are a compromise between robustness and efficiency.
 
-    :param timesteps: (int) It is recommended to put in the number of steps you plan to train your agent for, though any number can be chosen here.
+    :param timesteps: (int) This is the number used for half-life calculation. It is recommended to put in the number of steps you plan to train your agent for, though any number can be chosen here.
     :param lr_start: (float) the starting value of the learning rate.
     :param lr_min: (float) clips the learning rate to a minimum value. Set to 0 for no clipping.
     :param half_life: (float) The (relative) fraction of timesteps after which the learning rate will reach half its initial value. E.g. 0.1 = 10%, Meaning half_life is 100,000 steps when training for 1,000,000 steps
