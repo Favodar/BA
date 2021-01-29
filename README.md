@@ -12,8 +12,8 @@ The surface-level script imports OpenAI's stable-baselines library, in order to 
 
 This reinforcement learning project was done for my Bachelor thesis. What follows is the introduction of the Thesis:
 
-2 Introduction
-2.1 Motivation
+### Introduction
+## Motivation
 Collaborative robots, or cobots, are a relatively new phenomenon with the potential to transform the workplace in many industries. The hope is that they will be able to execute menial tasks, freeing up human workers for more complex, strategic and interesting work, being a welcomed relief and not a competitor. My goal in this project is to give a cobot the ability to learn simple tasks on its own, opening the door for the acquisition of more complex tasks in the future.
 For this work, I use the cobot Panda by German manufacturer Franka Emika, and aim for the mastery of a task that comes natural to humans, but poses a sufficiently complex challenge to a robot: throwing a ball at, or rolling a ball towards, different targets with randomly assigned positions, by making an appropriate arm movement and releasing the ball from its grasp at the right time.
 Making the agent learn simpler tasks like touching a specified target or touching a randomly selected target should serve as stepping stones.
