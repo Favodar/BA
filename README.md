@@ -1,6 +1,8 @@
 # BA
 An environment for training a virtual robot with deep reinforcement learning (deep RL). It uses the deep RL library stable-baselines by OpenAI, the Robot Operating System (ROS), and the robot simulator Gazebo 9 with the physics engine ODE. I use it with a virtual model of the Franka Emika Panda cobot. If you want to use this project or have any questions, feel free to ask. Unfortunately the setup is complicated, and I wouldn't recommend trying it on your own if you have no experience with ROS, but I may be able to help you.
 
+This reinforcement learning project was done for my Bachelor thesis. I appended the introduction (including the motivation) for the thesis to this readme.
+
 ### Architecture
 For the purpose of this work, I created python classes to connect the stable-baselines reinforcement learning algorithms to the Gazebo robot simulation. An integral component of the communication is Rospy, a python library for the Robot Operating System (ROS).
 
@@ -21,9 +23,7 @@ Those are the classes I have written and uploaded here. They import other existi
 The third layer imports rospy (python library for ROS), and therefore connects everything with ROS, which in turn connects to the physics & robot simulation Gazebo. This means, the impact of the control signals on the robot can eventually be observed via the Gazebo Client (which is the Gazebo GUI).
 The first layer, surface-level script imports OpenAI's stable-baselines library, in order to use its implementations of deep reinforcement learning (deep RL) algorithms like PPO2 and DDPG.
 
-This reinforcement learning project was done for my Bachelor thesis. What follows is the introduction of the Thesis:
-
-## Introduction
+## Thesis Introduction
 ### Motivation
 Collaborative robots, or cobots, are a relatively new phenomenon with the potential to transform the workplace in many industries. The hope is that they will be able to execute menial tasks, freeing up human workers for more complex, strategic and interesting work, being a welcomed relief and not a competitor. My goal in this project is to give a cobot the ability to learn simple tasks on its own, opening the door for the acquisition of more complex tasks in the future.
 For this work, I use the cobot Panda by German manufacturer Franka Emika, and aim for the mastery of a task that comes natural to humans, but poses a sufficiently complex challenge to a robot: throwing a ball at, or rolling a ball towards, different targets with randomly assigned positions, by making an appropriate arm movement and releasing the ball from its grasp at the right time.
