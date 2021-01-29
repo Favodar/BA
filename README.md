@@ -12,6 +12,8 @@ The second layer implements the OpenAI gym environment abstract class, a standar
 In order to keep the code readable, communication with ROS and Gazebo was outsourced to a third layer, which gets called upon by the gym environment class. This makes making changes to the (second layer) gym environment easier (i.e. changing the action space) and less error prone.
 This third layer provides functions like “getObservation(action)”, which returns an observation of the physics simulation given an action, and “getReward()”, which calculates the reward.
 
+<img src="pictures/ba_class_library_structure.png"/>
+
 In the ballrolling scenario, the layer-script-correspondence is like this:
 - First Layer: ```BallrollingTouchEnd_PPO2_Franka.py```  
 - Second Layer: ```BallrollingTouchEnd_FrankaGymEnvironment_ContinuousActions.py```  
