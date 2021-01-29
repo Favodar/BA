@@ -1,14 +1,25 @@
 # BA
 An environment for training a virtual robot with deep reinforcement learning (deep RL). It uses the deep RL library stable-baselines by OpenAI, the Robot Operating System (ROS), and the robot simulator Gazebo 9 with the physics engine ODE. I use it with a virtual model of the Franka Emika Panda cobot. If you want to use this project or have any questions, feel free to ask. Unfortunately the setup is complicated, and I wouldn't recommend trying it on your own if you have no experience with ROS, but I may be able to help you.
 
-The general architecture is this:
-On the surface is a script that controls the hyperparameters, starts & ends the training and saves the logs and models (BallrollingTouchEnd_PPO2_Franka.py)  
-This script imports an environment (in the RL sense) which implements the OpenAI Gym environment class (BallrollingTouchEnd_FrankaGymEnvironment_ContinuousActions.py).  
-This environment has high-level control over the robot. The lower-level control (which isn't really low-level) and the reward calculation are implemented in the GymReward class (BallrollingTouchEnd_FrankaRewardNode_Efficient.py).  
+### Architecture
+For the purpose of this work, I created python classes to connect the stable-baselines reinforcement learning algorithms to the Gazebo robot simulation. An integral component of the communication is Rospy, a python library for the Robot Operating System (ROS).
+
+At their core, the classes are divided into 3 layers.
+The first one initializes the RL algorithms and specifies the hyperparameters. It also starts the training, logging, and loads and/or saves the models and environment parameters.
+The second layer implements the OpenAI gym environment abstract class, a standardized way of implementing a reinforcement learning envíronment that works with the stable-baselines algorithms.
+In order to keep the code readable, communication with ROS and Gazebo was outsourced to a third layer, which gets called upon by the gym environment class. This makes making changes to the gym environment easier (i.e. changing the action space) and less error prone.
+This third layer provides functions like “getObservation(action)”, which returns an observation of the physics simulation given an action, and “getReward()”.
+
+In the ballrolling scenario, the layer-script-correspondence is like this:
+- First Layer: ```BallrollingTouchEnd_PPO2_Franka.py```  
+- Second Layer: ```BallrollingTouchEnd_FrankaGymEnvironment_ContinuousActions.py```  
+- Third Layer: ```BallrollingTouchEnd_FrankaRewardNode_Efficient.py```
+
+The "old_versions" folder contains many other scripts for different training scenarios (i.e. touching a randomly positioned ball) with the same 3-layer structure.
 
 Those are the classes I have written and uploaded here. They import other existing libraries and classes, which are connected as follows:
-The lower-level control class imports rospy (python library for ROS), and therefore connects everything with ROS, which in turn connects to the physics & robot simulation Gazebo. This means, the impact of the control signals on the robot can eventually be observed via the Gazebo Client (which is the Gazebo GUI).
-The surface-level script imports OpenAI's stable-baselines library, in order to use its implementations of deep reinforcement learning (deep RL) algorithms like PPO2 and DDPG.
+The third layer imports rospy (python library for ROS), and therefore connects everything with ROS, which in turn connects to the physics & robot simulation Gazebo. This means, the impact of the control signals on the robot can eventually be observed via the Gazebo Client (which is the Gazebo GUI).
+The first layer, surface-level script imports OpenAI's stable-baselines library, in order to use its implementations of deep reinforcement learning (deep RL) algorithms like PPO2 and DDPG.
 
 This reinforcement learning project was done for my Bachelor thesis. What follows is the introduction of the Thesis:
 
