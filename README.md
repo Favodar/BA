@@ -7,8 +7,8 @@ For the purpose of this work, I created python classes to connect the stable-bas
 At their core, the classes are divided into 3 layers.
 The first one initializes the RL algorithms and specifies the hyperparameters. It also starts the training, logging, and loads and/or saves the models and environment parameters.
 The second layer implements the OpenAI gym environment abstract class, a standardized way of implementing a reinforcement learning envíronment that works with the stable-baselines algorithms.
-In order to keep the code readable, communication with ROS and Gazebo was outsourced to a third layer, which gets called upon by the gym environment class. This makes making changes to the gym environment easier (i.e. changing the action space) and less error prone.
-This third layer provides functions like “getObservation(action)”, which returns an observation of the physics simulation given an action, and “getReward()”.
+In order to keep the code readable, communication with ROS and Gazebo was outsourced to a third layer, which gets called upon by the gym environment class. This makes making changes to the (second layer) gym environment easier (i.e. changing the action space) and less error prone.
+This third layer provides functions like “getObservation(action)”, which returns an observation of the physics simulation given an action, and “getReward()”, which calculates the reward.
 
 In the ballrolling scenario, the layer-script-correspondence is like this:
 - First Layer: ```BallrollingTouchEnd_PPO2_Franka.py```  
